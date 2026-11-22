@@ -1,0 +1,474 @@
+/* ==========================================================================
+   EcoCash Login & Payment Page Styles
+   Matching EcoCash official visual theme (without PIN)
+   ========================================================================== */
+
+:root {
+  --ecocash-blue: #0066cc;
+  --ecocash-blue-dark: #0052a3;
+  --ecocash-red: #e52329;
+  --text-dark: #111827;
+  --text-muted: #64748b;
+  --bg-page: #f8fafc;
+  --border-blue: #0066cc;
+  --font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--bg-page);
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Outer Card Container */
+.ecocash-card-container {
+  width: 100%;
+  max-width: 580px;
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06), 0 1px 4px rgba(0, 0, 0, 0.04);
+  overflow: hidden;
+  border: 1px solid #e2e8f0;
+}
+
+/* Selected Plan Summary Banner (Shows the plan picked from the previous page) */
+.plan-summary-badge {
+  background: #f0f7ff;
+  border-bottom: 1.5px solid #bfdbfe;
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13.5px;
+}
+
+.summary-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1e3a8a;
+}
+
+.summary-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.summary-price {
+  background: var(--ecocash-red);
+  color: #ffffff;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-weight: 800;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+}
+
+/* Top Login Area */
+.login-box-content {
+  padding: 38px 36px 32px;
+  text-align: center;
+}
+
+/* EcoCash Logo */
+.ecocash-logo-row {
+  margin-bottom: 20px;
+}
+
+.ecocash-logo {
+  font-size: 38px;
+  font-weight: 900;
+  letter-spacing: -1px;
+  line-height: 1;
+  display: inline-block;
+}
+
+.logo-eco {
+  color: var(--ecocash-blue);
+}
+
+.logo-cash {
+  color: var(--ecocash-red);
+}
+
+/* Login Heading */
+.login-title {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--text-dark);
+  margin-bottom: 28px;
+}
+
+/* Phone Input Field Group (exact match with blue border and Zim flag) */
+.phone-input-field-group {
+  display: flex;
+  align-items: center;
+  border: 2px solid var(--border-blue);
+  border-radius: 8px;
+  padding: 12px 16px;
+  background: #ffffff;
+  transition: all 0.2s ease;
+  margin-bottom: 24px;
+}
+
+.phone-input-field-group:focus-within {
+  box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.2);
+}
+
+.flag-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+  flex-shrink: 0;
+}
+
+.zim-flag-svg {
+  border-radius: 2px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+}
+
+.prefix-code {
+  font-size: 15px;
+  font-weight: 700;
+  color: #334155;
+  margin-right: 12px;
+  letter-spacing: 0.2px;
+}
+
+.phone-text-input {
+  border: none;
+  outline: none;
+  font-family: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-dark);
+  width: 100%;
+}
+
+.phone-text-input::placeholder {
+  color: #94a3b8;
+  font-weight: 500;
+}
+
+/* PIN 4-Box Input */
+.pin-boxes-label {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.pin-toggle-btn {
+  margin-left: auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 2px 4px;
+  display: flex;
+  align-items: center;
+  border-radius: 4px;
+  transition: background 0.15s;
+}
+
+.pin-toggle-btn:hover {
+  background: #e8f0fe;
+}
+
+.pin-toggle-btn:focus-visible {
+  outline: 2px solid #0066cc;
+  outline-offset: 2px;
+}
+
+.pin-boxes {
+  display: flex;
+  gap: 14px;
+  justify-content: flex-start;
+  margin-bottom: 24px;
+}
+
+.pin-box {
+  width: 54px;
+  height: 58px;
+  border: 2px solid #c9d8ee;
+  border-radius: 10px;
+  background: #fff;
+  text-align: center;
+  font-size: 26px;
+  font-weight: 700;
+  color: #0066cc;
+  caret-color: transparent;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  letter-spacing: 4px;
+}
+
+.pin-box:focus {
+  border-color: #0066cc;
+  box-shadow: 0 0 0 3px rgba(0,102,204,0.18);
+}
+
+.pin-box:not(:placeholder-shown) {
+  border-color: #0066cc;
+}
+
+/* Login Action Button */
+.btn-ecocash-login {
+  width: 100%;
+  background-color: var(--ecocash-blue);
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 14px;
+  font-size: 16.5px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.15s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 102, 204, 0.25);
+}
+
+.btn-ecocash-login:hover {
+  background-color: var(--ecocash-blue-dark);
+  transform: translateY(-1px);
+}
+
+.btn-ecocash-login:active {
+  transform: translateY(0);
+}
+
+/* USSD Handset Notification Card (shown after submitting) */
+.ussd-notification-card {
+  margin-top: 24px;
+  background: #f8fafc;
+  border: 1.5px dashed #0066cc;
+  border-radius: 10px;
+  padding: 20px 18px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.ussd-icon-spinner {
+  width: 32px;
+  height: 32px;
+  border: 3px solid #e2e8f0;
+  border-top-color: #0066cc;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: 0 auto 12px;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.ussd-title {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0066cc;
+  margin-bottom: 6px;
+}
+
+.ussd-body {
+  font-size: 13.5px;
+  color: #475569;
+  line-height: 1.45;
+  margin-bottom: 12px;
+}
+
+.ussd-info-pill {
+  display: inline-block;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 12px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   Bottom Curved Blue Section
+   ========================================================================== */
+.bottom-curved-banner {
+  position: relative;
+  background-color: var(--ecocash-blue);
+  color: #ffffff;
+  padding: 30px 28px 24px;
+  border-radius: 36px 36px 0 0;
+  margin-top: 10px;
+  box-shadow: 0 -4px 16px rgba(0, 102, 204, 0.15);
+}
+
+.bottom-support-text {
+  text-align: center;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 20px;
+  letter-spacing: 0.1px;
+}
+
+/* Two White Action Cards Row */
+.action-cards-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 26px;
+}
+
+.action-card-btn {
+  background: #ffffff;
+  border-radius: 10px;
+  padding: 16px 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  text-decoration: none;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.action-card-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.14);
+}
+
+.action-card-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 28px;
+}
+
+.info-blue-box {
+  background: #0066cc;
+  color: #ffffff;
+  width: 22px;
+  height: 22px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.info-letter {
+  font-family: serif;
+  font-size: 15px;
+  font-weight: 800;
+  font-style: italic;
+  line-height: 1;
+}
+
+.action-card-label {
+  font-size: 14px;
+  font-weight: 800;
+  color: #1e293b;
+}
+
+/* Legal & Version Footer */
+.bottom-footer-legal {
+  text-align: center;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 11.5px;
+}
+
+.version-text {
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+  color: rgba(255, 255, 255, 0.95);
+  letter-spacing: 0.3px;
+}
+
+.terms-text {
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.terms-link {
+  color: #ffffff;
+  text-decoration: underline;
+  font-weight: 600;
+}
+
+.terms-link:hover {
+  color: #dbeafe;
+}
+
+/* Responsive adjustments */
+@media (max-width: 500px) {
+  body {
+    padding: 12px 8px;
+  }
+
+  .login-box-content {
+    padding: 28px 20px 24px;
+  }
+
+  .ecocash-logo {
+    font-size: 32px;
+  }
+
+  .bottom-curved-banner {
+    padding: 24px 18px 20px;
+    border-radius: 28px 28px 0 0;
+  }
+
+  .action-cards-row {
+    gap: 10px;
+  }
+}
+
+/* ===== Approval Waiting Card ===== */
+.approval-waiting-card {
+  text-align: center;
+  padding: 32px 20px 24px;
+}
+.approval-spinner {
+  width: 52px; height: 52px;
+  border: 5px solid #e2e8f0;
+  border-top-color: #0066cc;
+  border-radius: 50%;
+  animation: spin 0.9s linear infinite;
+  margin: 0 auto 20px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.approval-title {
+  font-size: 17px; font-weight: 800; color: #0f172a; margin-bottom: 10px;
+}
+.approval-body {
+  font-size: 13.5px; color: #475569; line-height: 1.6; margin-bottom: 20px;
+}
+.approval-status-pill {
+  display: inline-block;
+  background: #f0f7ff; border: 1.5px solid #bfdbfe;
+  color: #0066cc; font-size: 13px; font-weight: 600;
+  padding: 7px 18px; border-radius: 999px;
+  transition: background 0.3s, color 0.3s;
+}
+.approval-status-pill.rejected {
+  background: #fef2f2; border-color: #fecaca; color: #dc2626;
+}

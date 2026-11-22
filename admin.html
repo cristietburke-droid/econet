@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#08172a">
+  <title>Starlink to Cell | Admin Dashboard</title>
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body>
+  <aside class="sidebar" id="sidebar">
+    <a class="brand" href="index.html"><span class="brand-mark">✳</span><span><b>STARLINK</b><small>to Cell · Admin</small></span></a>
+    <div class="side-label">WORKSPACE</div>
+    <nav>
+      <button class="nav-item active" data-view="overview"><span>▦</span> Overview</button>
+      <button class="nav-item" data-view="plans"><span>◈</span> Data plans</button>
+      <button class="nav-item" data-view="transactions"><span>⇄</span> Transactions</button>
+      <button class="nav-item" data-view="customers"><span>♙</span> Customers</button>
+    </nav>
+    <div class="sidebar-bottom"><div class="admin-avatar">AD</div><div><b>Administrator</b><small>Demo workspace</small></div><span class="online-dot"></span></div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="menu-button" id="menuButton" aria-label="Toggle menu">☰</button>
+      <div><span class="crumb">Workspace /</span> <b id="pageTitle">Overview</b></div>
+      <div class="top-actions"><span class="demo-pill"><i></i> DEMO MODE</span><a class="view-site" href="index.html">View website ↗</a></div>
+    </header>
+
+    <section class="view active" id="view-overview">
+      <div class="page-heading"><div><div class="overline">YOUR BUSINESS AT A GLANCE</div><h1>Overview</h1><p>Monitor plans, customer activity and payment records.</p></div><span class="date-chip" id="todayDate"></span></div>
+      <div class="stats-grid">
+        <article class="stat-card"><div class="stat-top"><span>Total customers</span><span class="stat-icon blue">♙</span></div><strong id="statCustomers">0</strong><small>Demo customer records</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Transactions</span><span class="stat-icon purple">⇄</span></div><strong id="statTransactions">0</strong><small>Recorded transactions</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Successful payments</span><span class="stat-icon green">✓</span></div><strong id="statSuccessful">0</strong><small>Marked as successful</small></article>
+        <article class="stat-card"><div class="stat-top"><span>Recorded revenue</span><span class="stat-icon amber">$</span></div><strong id="statRevenue">$0.00</strong><small>Successful demo payments only</small></article>
+      </div>
+      <div class="content-grid">
+        <section class="panel"><div class="panel-heading"><div><h2>Recent transactions</h2><p>Latest payment activity in this demo</p></div><button class="text-button" data-goto="transactions">View all →</button></div><div class="table-wrap"><table><thead><tr><th>REFERENCE</th><th>CUSTOMER</th><th>PLAN</th><th>AMOUNT</th><th>STATUS</th></tr></thead><tbody id="recentTransactions"></tbody></table></div></section>
+        <section class="panel quick-panel"><div class="panel-heading"><div><h2>Quick actions</h2><p>Manage your storefront</p></div></div><button class="quick-action" data-goto="plans"><span class="quick-icon">◈</span><span><b>Manage data plans</b><small>Edit names, prices and availability</small></span><span>→</span></button><button class="quick-action" data-goto="transactions"><span class="quick-icon">⇄</span><span><b>Review transactions</b><small>Update demo payment statuses</small></span><span>→</span></button><div class="notice"><b>Demo data only</b><p>This dashboard stores changes in this browser using local storage. Connect a secure backend before using it with real customers or payments.</p></div></section>
+      </div>
+    </section>
+
+    <section class="view" id="view-plans">
+      <div class="page-heading"><div><div class="overline">STOREFRONT CATALOGUE</div><h1>Data plans</h1><p>Manage the plans displayed to customers.</p></div><button class="primary-button" id="addPlanButton">＋ Add data plan</button></div>
+      <section class="panel"><div class="panel-heading"><div><h2>Available plans</h2><p>Changes are saved in this browser only.</p></div><span class="count-chip" id="planCount">0 plans</span></div><div class="table-wrap"><table><thead><tr><th>PLAN</th><th>DATA</th><th>VALIDITY</th><th>PRICE</th><th>STATUS</th><th>ACTIONS</th></tr></thead><tbody id="plansTable"></tbody></table></div></section>
+    </section>
+
+    <section class="view" id="view-transactions">
+      <div class="page-heading"><div><div class="overline">PAYMENT ACTIVITY</div><h1>Transactions</h1><p>Review payment records and demo statuses.</p></div><button class="secondary-button" id="exportButton">↓ Export CSV</button></div>
+      <section class="panel"><div class="toolbar"><input id="transactionSearch" type="search" placeholder="Search reference or customer…"><select id="statusFilter"><option value="all">All statuses</option><option value="Successful">Successful</option><option value="Pending">Pending</option><option value="Failed">Failed</option></select></div><div class="table-wrap"><table><thead><tr><th>REFERENCE</th><th>CUSTOMER</th><th>PLAN</th><th>DATE</th><th>AMOUNT</th><th>STATUS</th><th>UPDATE</th></tr></thead><tbody id="transactionsTable"></tbody></table></div></section>
+    </section>
+
+    <section class="view" id="view-customers">
+      <div class="page-heading"><div><div class="overline">CUSTOMER DIRECTORY</div><h1>Customers</h1><p>View customer records associated with demo orders.</p></div><span class="count-chip" id="customerCount">0 customers</span></div>
+      <section class="panel"><div class="toolbar"><input id="customerSearch" type="search" placeholder="Search customer name or email…"></div><div class="table-wrap"><table><thead><tr><th>CUSTOMER</th><th>EMAIL</th><th>PHONE</th><th>ORDERS</th><th>LAST ACTIVITY</th></tr></thead><tbody id="customersTable"></tbody></table></div></section>
+    </section>
+
+    <footer class="footer-note">Starlink to Cell Admin · Frontend demo · Not connected to live payment or customer systems</footer>
+  </main>
+
+  <div class="modal-backdrop" id="planDialog" hidden><form class="dialog" id="planForm"><button class="dialog-close" type="button" data-close>×</button><div class="overline">CATALOGUE SETTINGS</div><h2 id="dialogTitle">Add data plan</h2><input type="hidden" id="planId"><label>Plan display name<input id="planName" required maxlength="60" placeholder="e.g. Monthly Unlimited"></label><div class="form-row"><label>Data allowance<input id="planData" required maxlength="30" placeholder="e.g. 35GB"></label><label>Validity<input id="planValidity" required maxlength="30" placeholder="e.g. 30 days"></label></div><div class="form-row"><label>Price (USD)<input id="planPrice" type="number" min="0" step="0.01" required></label><label>Availability<select id="planActive"><option value="true">Active</option><option value="false">Hidden</option></select></label></div><div class="dialog-actions"><button type="button" class="secondary-button" data-close>Cancel</button><button type="submit" class="primary-button">Save plan</button></div></form></div>
+  <div class="toast" id="toast" role="status"></div>
+  <script src="admin.js"></script>
+</body>
+</html>
