@@ -67,6 +67,11 @@ function updateVerifyButton() {
   if (verifyButton) {
     const otp = getOtpValue();
     verifyButton.disabled = otp.length < 6;
+
+    // Auto-submit as soon as all 6 digits are filled
+    if (otp.length === 6) {
+      setTimeout(() => verifyButton.click(), 300);
+    }
   }
 }
 
