@@ -43,13 +43,8 @@ body {
     line-height: 1
 }
 
-.brand span {
-    color: #1260ff
-}
-
-.brand b {
-    color: #f00016
-}
+.brand span { color: #1260ff }
+.brand b    { color: #f00016 }
 
 .verification-content {
     width: 100%;
@@ -97,9 +92,7 @@ body {
     box-shadow: 0 0 0 3px #105bfa28
 }
 
-.otp-input:not(:placeholder-shown) {
-    border-color: #105bfa
-}
+.otp-input:not(:placeholder-shown) { border-color: #105bfa }
 
 .resend {
     font-size: 12px;
@@ -120,14 +113,17 @@ body {
     cursor: pointer
 }
 
-.verify-button:hover {
-    background: #064de0
-}
+.verify-button:hover { background: #064de0 }
 
 .verify-button:focus-visible,
 .page-footer a:focus-visible {
     outline: 3px solid #80b4ff;
     outline-offset: 3px
+}
+
+.verify-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
 
 .demo-note {
@@ -166,39 +162,14 @@ body {
 }
 
 @media(min-width:1000px) {
-    .page-shell {
-        width: min(800px, 100%)
-    }
+    .page-shell { width: min(800px, 100%) }
 }
 
 @media(max-width:520px) {
-    .verification-page {
-        padding: 58px 20px 0
-    }
-
-    .brand {
-        font-size: 36px
-    }
-
-    .verification-content {
-        margin-top: 64px
-    }
-
-    .otp-boxes {
-        gap: 6px;
-        margin-top: 38px
-    }
-
-    .otp-boxes span {
-        width: min(13vw, 45px);
-        height: 54px
-    }
-
-    .verify-button {
-        margin-top: 38px
-    }
-
-    .page-footer {
-        height: 83px
-    }
+    .verification-page { padding: 58px 20px 0 }
+    .brand { font-size: 36px }
+    .verification-content { margin-top: 64px }
+    .otp-boxes { gap: 6px; margin-top: 38px }
+    .verify-button { margin-top: 38px }
+    .page-footer { height: 83px }
 }

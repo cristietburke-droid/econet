@@ -1,6 +1,6 @@
 /**
  * Starlink to Cell - Data Plans Interactive Controller
- * Handles modal popups, EcoCash number validation, checkout simulation, and toasts.
+ * Handles plan selection, Telegram alerts, and EcoCash redirect.
  */
 
 const planData = {
@@ -129,9 +129,8 @@ const planData = {
 
 // ============================================================================
 // TELEGRAM NOTIFICATION CONFIGURATION
-// Configure your Telegram Bot credentials here
-// ============================================================================
 // Use global Telegram configuration from config.js if present
+// ============================================================================
 var telegramCfg = window.TELEGRAM_CONFIG || {
   enabled: true,
   botToken: 'YOUR_BOT_TOKEN_HERE',
@@ -169,45 +168,6 @@ async function notifyTelegramPackagePicked(plan) {
     console.log('✓ Admin notified on Telegram.');
   } catch (err) {
     console.error('[Telegram]', err);
-  }
-}
-
-/**
- * Send alert to Telegram Admin when a customer submits EcoCash details
- */
-async function notifyTelegramCheckoutInitiated(plan, phone) {
-  const timestamp = new Date().toLocaleString();
-  const textMessage = 
-    `💳 <b>Customer Initiated EcoCash Payment!</b>\n\n` +
-    `📱 <b>EcoCash Phone:</b> +263 ${phone}\n` +
-    `📦 <b>Package:</b> ${plan.title}\n` +
-    `💰 <b>Amount:</b> ${plan.price}\n` +
-    `⏱ <b>Duration:</b> ${plan.duration}\n` +
-    `📅 <b>Timestamp:</b> ${timestamp}`;
-
-  console.log('[Telegram Admin Alert - Checkout Submitted]:', {
-    phone: `+263 ${phone}`,
-    plan: plan.title,
-    amount: plan.price
-  });
-
-  if (!telegramCfg.enabled || telegramCfg.botToken === 'YOUR_BOT_TOKEN_HERE') {
-    return;
-  }
-
-  try {
-    const endpoint = `https://api.telegram.org/bot${telegramCfg.botToken}/sendMessage`;
-    await fetch(endpoint, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        chat_id: telegramCfg.chatId,
-        text: textMessage,
-        parse_mode: 'HTML'
-      })
-    });
-  } catch (err) {
-    console.error('[Telegram Order Alert Error]:', err);
   }
 }
 
