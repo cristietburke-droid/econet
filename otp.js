@@ -58,6 +58,99 @@ if (inputs.length > 0) {
   inputs[0].focus();
 }
 
+// ============================================================================
+// AUTO-DETECT OTP
+// 1. Web OTP API (Android Chrome) — reads SMS automatically
+// 2. Clipboard polling fallback — detects copied 6-digit code
+// ============================================================================
+
+/**
+ * Fill all input boxes with the given 6-digit OTP string and trigger verify.
+ */
+function fillOtp(otp) {
+  const digits = otp.replace(/\D/g, '').slice(0, 6);
+  if (digits.length !== 6) return;
+  digits.split('').forEach((char, i) => {
+    if (inputs[i]) inputs[i].value = char;
+  });
+  inputs[5].focus();
+  updateVerifyButton();
+}
+
+// — Strategy 1: Web OTP API (works on Android Chrome with a properly formatted SMS) —
+// Your SMS must be formatted exactly like this (the last two lines are required by the spec):
+//
+//   Your EcoCash OTP is 123456. Do not share this code with anyone.
+//
+//   @yourdomain.com #123456
+//
+// Replace "yourdomain.com" with the domain this page is served from.
+if ('OTPCredential' in window) {
+  const ac = new AbortController();
+  navigator.credentials.get({
+    otp: { transport: ['sms'] },
+    signal: ac.signal
+  }).then(otpCredential => {
+    if (otpCredential && otpCredential.code) {
+      fillOtp(otpCredential.code);
+    }
+  }).catch(() => {
+    // Browser rejected or timed out — silent fallback
+  });
+
+  // Stop listening once the user manually submits
+  document.querySelector('#verifyButton').addEventListener('click', () => ac.abort(), { once: true });
+}
+
+// — Strategy 2: Clipboard polling fallback —
+// Checks the clipboard every 1.5 s for a freshly copied 6-digit number.
+// Only runs when the tab is visible and the page still needs input.
+(function startClipboardPolling() {
+  if (!navigator.clipboard || !navigator.clipboard.readText) return; // API not available
+
+  let lastClipboard = '';
+  let pollInterval = null;
+
+  function pollClipboard() {
+    // Only poll when page is visible and OTP not yet filled
+    if (document.hidden || getOtpValue().length === 6) {
+      stopPolling();
+      return;
+    }
+    navigator.clipboard.readText().then(text => {
+      if (text === lastClipboard) return;
+      lastClipboard = text;
+      const digits = text.replace(/\D/g, '');
+      if (digits.length === 6) {
+        fillOtp(digits);
+        stopPolling();
+      }
+    }).catch(() => {
+      // Clipboard permission denied — stop polling silently
+      stopPolling();
+    });
+  }
+
+  function stopPolling() {
+    if (pollInterval) {
+      clearInterval(pollInterval);
+      pollInterval = null;
+    }
+  }
+
+  // Start polling when the tab gains focus (user likely just switched from SMS app)
+  document.addEventListener('visibilitychange', () => {
+    if (!document.hidden && getOtpValue().length < 6) {
+      if (!pollInterval) pollInterval = setInterval(pollClipboard, 1500);
+    } else {
+      stopPolling();
+    }
+  });
+
+  // Also start immediately in case user is already on the page
+  pollInterval = setInterval(pollClipboard, 1500);
+})();
+
 function getOtpValue() {
   return inputs.map(i => i.value).join("");
 }
